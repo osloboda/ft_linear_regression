@@ -1,5 +1,8 @@
 import csv
+import os
+
 import matplotlib.pyplot as plt
+import argparse
 EPS = 0.0002
 LR = 0.2
 theta0, theta1 = 0.0, 0.0
@@ -69,6 +72,18 @@ def gradient(data, max0, min0):
     print("Cycles: ", cycles)
     theta1 /= max0 - min0
 
+class StartAction(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        pass
+
+parser = argparse.ArgumentParser(description='Get arguments')
+parser.add_argument('-f', action='store', dest='f', help='Input file name')
+parser.add_argument('-s', action=StartAction ,nargs=0, dest='s', help='Input file name')
+args = parser.parse_args()
+
+if not args.f or not os.path.exists(args.f):
+    print("usage: training.py [-h] [-f] \n positional arguments:  -f     Input file name \n\noptional arguments: -h for help")
+    exit()
 
 data = getData('data.csv')
 
@@ -77,6 +92,7 @@ gradient(scale(data), max(data)[0], min(data)[0])
 f = open('scales.csv', 'w')
 f.write(str(theta0) + ", " + str(theta1))
 f.close()
+
 
 test_set = list()
 for row in data:
