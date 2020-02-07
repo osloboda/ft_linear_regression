@@ -1,6 +1,5 @@
 import csv
 import os
-
 import matplotlib.pyplot as plt
 import argparse
 EPS = 0.0002
